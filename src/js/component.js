@@ -201,11 +201,34 @@ vjs.Component.prototype.createEl = function(tagName, attributes){
   return vjs.createEl(tagName, attributes);
 };
 
+/**
+ *
+ * Return a localized string if available, or the original string
+ * Exact match takes precedence, but will check for languages case-insensitively and without the cultre part.
+ * e.g. en-US, en-us, en, EN
+ *
+ * @param {String=} string String to be localized
+ * @return {String}
+ */
 vjs.Component.prototype.localize = function(string){
-  var lang = this.player_.language(),
-      languages = this.player_.languages();
-  if (languages && languages[lang] && languages[lang][string]) {
-    return languages[lang][string];
+  var lang = this.player_.language();
+  var languages = this.player_.languages();
+  if (!languages) {
+    return string;
+  }
+  var mergedLanguage = {};
+  var matchingLanguages = vjs.obj.getPropertiesCaseless(languages,lang);
+  var primaryCode = ('' + lang).split('-')[0];
+  if (primaryCode !== lang) {
+    var baseLangs = vjs.obj.getPropertiesCaseless(languages,primaryCode);
+    matchingLanguages = matchingLanguages.concat(baseLangs);
+    matchingLanguages = matchingLanguages.concat([primaryCode]);
+  }
+  for (var i=0; i<matchingLanguages.length; i++) {
+    mergedLanguage = videojs.obj.merge(languages[matchingLanguages[i]], mergedLanguage);
+  }
+  if (mergedLanguage[string]) {
+    return mergedLanguage[string];
   }
   return string;
 };

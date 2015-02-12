@@ -172,6 +172,28 @@ vjs.obj.isArray = Array.isArray || function(arr) {
 };
 
 /**
+ * Returns array of properties that match case-insensively
+ * @param {object} obj Object to check
+ * @param {string} property Property to check for
+ * @return {Array} Array of properties matching case insensitively
+ * @private
+ */
+vjs.obj.getPropertiesCaseless = function(obj,prop) {
+  var propLowercase = (prop + '').toLowerCase();
+  var properties = [];
+  if (hasOwnProp.call(obj, prop)) {
+    // Exact match added first
+    properties.push(prop);
+  }
+  for(var p in obj) {
+    if (p !== prop && hasOwnProp.call(obj, p) && p.toLowerCase() === propLowercase) {
+      properties.push(p);
+    }
+  }
+  return properties;
+};
+
+/**
  * Check to see whether the input is NaN or not.
  * NaN is the only JavaScript construct that isn't equal to itself
  * @param {Number} num Number to check
