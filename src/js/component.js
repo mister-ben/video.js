@@ -217,7 +217,7 @@ class Component {
   }
 
   localize(string) {
-    let lang = ('' + this.player_.language()).toLowerCase();
+    let lang = this.player_.language();
     let primaryCode = lang.split('-')[0];
     let languages = this.player_.languages();
 
