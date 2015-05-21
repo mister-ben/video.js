@@ -217,21 +217,26 @@ class Component {
   }
 
   localize(string) {
-    let lang = this.player_.language();
-    let primaryCode = lang.split('-')[0];
-    let languages = this.player_.languages();
+    let code = this.player_.language && this.player_.language();
+    let languages = this.player_.languages && this.player_.languages();
 
-    if (!languages) {
+    if (!code || !languages) {
       return string;
     }
-    if (languages[lang] && languages[lang][string]) {
-      return languages[lang][string];
+
+    let language = languages[code];
+
+    if (language && language[string]) {
+      return language[string];
     }
-    if (primaryCode !== lang &&
-        languages[primaryCode] &&
-        languages[primaryCode][string]) {
-      return languages[primaryCode][string];
+
+    let primaryCode = code.split('-')[0];
+    let primaryLang = languages[primaryCode];
+
+    if (primaryLang && primaryLang[string]) {
+      return primaryLang[string];
     }
+
     return string;
   }
 
