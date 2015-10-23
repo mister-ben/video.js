@@ -66,8 +66,8 @@ var videojs = function(id, options, ready){
     // If a player instance has already been created for this ID return it.
     if (videojs.getPlayers()[id]) {
 
-      // If options or ready funtion are passed, warn
-      if (options) {
+      // Options won't be effective, warn if options present and not empty. 
+      if (options && Object.keys(options).length > 0) {
         log.warn(`Player "${id}" is already initialised. Options will not be applied.`);
       }
 
