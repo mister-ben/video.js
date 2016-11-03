@@ -1139,6 +1139,7 @@ class Component {
    */
   currentDimension(widthOrHeight) {
     let computedWidthOrHeight = 0;
+    const rule = `offset${toTitleCase(widthOrHeight)}`;
 
     if (widthOrHeight !== 'width' && widthOrHeight !== 'height') {
       throw new Error('currentDimension only accepts width or height value');
@@ -1148,10 +1149,14 @@ class Component {
       const computedStyle = window.getComputedStyle(this.el_);
 
       computedWidthOrHeight = computedStyle.getPropertyValue(widthOrHeight) || computedStyle[widthOrHeight];
+
+      if (computedWidthOrHeight === '0px') {
+        // IE's getComputedStyle returns 0px for fluid players
+        computedWidthOrHeight = this.el_[rule];
+      }
     } else if (this.el_.currentStyle) {
       // ie 8 doesn't support computed style, shim it
       // return clientWidth or clientHeight instead for better accuracy
-      const rule = `offset${toTitleCase(widthOrHeight)}`;
 
       computedWidthOrHeight = this.el_[rule];
     }
