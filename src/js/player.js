@@ -1578,23 +1578,47 @@ class Player extends Component {
   play() {
     const Promise_ = this.options_.Promise || window.Promise;
 
-    const play_ = (resolve) => {
+    const play_ = (resolve, reject) => {
       // Only calls the tech's play if we already have a src loaded
       if (this.src() || this.currentSrc()) {
-        return resolve(this.techGet_('play'));
+        const playPromise = this.techGet_('play');
+
+        if (playPromise !== undefined && typeof playPromise.then === 'function') {
+          playPromise.then(
+            (r) => {
+              resolve(r);
+            },
+            (e) => {
+              if (e.name === 'NotAllowedError') {
+                // Probably browser blocked autoplay - useful to log / trigger an event?
+                // e.g. Google Analytics, play triggered by autoplay should be a non-interaction event
+                // e.message is more specific
+                // on chrome is 'play() can only be initiated by a user gesture.'
+                // localised? (not on german chrome)
+                // other browsers
+              }
+              reject(e);
+            }
+          );
+        }
+      } else {
+        const noSourceError = new Error('No source is loaded');
+
+        noSourceError.name = 'NoSourceError';
+        reject(noSourceError);
       }
 
-      this.tech_.one('loadstart', function() {
-        // if resolve is actually the resolution to a promise
-        // it will resolve here, otherwise this will do nothing
-        resolve(this.play());
+      this.tech_.one('playing', function() {
+        // for techs that don't return promises
+        // need to track errors in this case to reject?
+        resolve();
       });
     };
 
     // return a Promise if the browser supports it
     if (typeof Promise_ === 'function') {
       return new Promise_((resolve, reject) => {
-        play_(resolve);
+        play_(resolve, reject);
       });
     }
 
