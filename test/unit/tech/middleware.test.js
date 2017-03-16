@@ -21,6 +21,18 @@ QUnit.test('middleware can be added with the use method', function(assert) {
   assert.equal(middleware.getMiddleware('foo').pop(), mwFactory, 'we are able to add middleware');
 });
 
+QUnit.test('the use method accepts multiple types', function(assert) {
+  const myMw = {};
+  const mwFactory = () => myMw;
+
+  assert.expect(2);
+
+  middleware.use(['foo', 'bar'], mwFactory);
+
+  assert.equal(middleware.getMiddleware('foo').pop(), mwFactory, 'middleware was added for first type');
+  assert.equal(middleware.getMiddleware('bar').pop(), mwFactory, 'middleware was added for second type');
+});
+
 QUnit.test('middleware get iterates through the middleware array the right order', function(assert) {
   const cts = [];
   const durs = [];

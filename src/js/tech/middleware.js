@@ -2,9 +2,14 @@ import { assign } from '../utils/obj.js';
 
 const middlewares = {};
 
-export function use(type, middleware) {
-  middlewares[type] = middlewares[type] || [];
-  middlewares[type].push(middleware);
+export function use(types, middleware) {
+  if (!Array.isArray(types)) {
+    types = [types];
+  }
+  types.forEach((type) => {
+    middlewares[type] = middlewares[type] || [];
+    middlewares[type].push(middleware);
+  });
 }
 
 export function getMiddleware(type) {
