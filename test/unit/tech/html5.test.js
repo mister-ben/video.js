@@ -69,6 +69,7 @@ QUnit.test('should detect whether the volume can be changed', function(assert) {
 });
 
 QUnit.test('test playbackRate', function(assert) {
+  console.info('1 playbackRate test');  // eslint-disable-line no-console
   // Android 2.3 always returns 0 for playback rate
   if (!Html5.canControlPlaybackRate()) {
     assert.ok(true, 'Playback rate is not supported');
@@ -85,6 +86,7 @@ QUnit.test('test playbackRate', function(assert) {
 });
 
 QUnit.test('test defaultPlaybackRate', function(assert) {
+  console.info('2 defaultPlaybackRate test');  // eslint-disable-line no-console
   // Android 2.3 always returns 0 for playback rate
   if (!Html5.canControlPlaybackRate()) {
     assert.ok(true, 'Playback rate is not supported');
@@ -101,6 +103,8 @@ QUnit.test('test defaultPlaybackRate', function(assert) {
 });
 
 QUnit.test('blacklist playbackRate support on older verisons of Chrome on Android', function(assert) {
+  console.info('3 blacklist test');  // eslint-disable-line no-console
+  Html5.TEST_VID.playbackRate = 1;
   if (!Html5.canControlPlaybackRate()) {
     console.info('Skip test as Html5.canControlPlaybackRate() == false'); // eslint-disable-line no-console
     assert.ok(true, 'playbackRate is not supported');
