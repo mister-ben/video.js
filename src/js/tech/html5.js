@@ -769,8 +769,10 @@ Html5.canControlPlaybackRate = function() {
     const playbackRate = Html5.TEST_VID.playbackRate;
 
     Html5.TEST_VID.playbackRate = (playbackRate / 2) + 0.1;
+    console.info('return %s %s %s', playbackRate !== Html5.TEST_VID.playbackRate, playbackRate, Html5.TEST_VID.playbackRate); // eslint-disable-line no-console
     return playbackRate !== Html5.TEST_VID.playbackRate;
   } catch (e) {
+    console.info('return false', e); // eslint-disable-line no-console
     return false;
   }
 };

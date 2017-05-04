@@ -68,6 +68,31 @@ QUnit.test('should detect whether the volume can be changed', function(assert) {
   Html5.TEST_VID = testVid;
 });
 
+QUnit.test('blacklist playbackRate support on older verisons of Chrome on Android', function(assert) {
+  if (!Html5.canControlPlaybackRate()) {
+    console.info('Skip test as Html5.canControlPlaybackRate() == false'); // eslint-disable-line no-console
+    assert.ok(true, 'playbackRate is not supported');
+    return;
+  }
+  console.info('Continue test as Html5.canControlPlaybackRate() == true'); // eslint-disable-line no-console
+  const oldIsAndroid = browser.IS_ANDROID;
+  const oldIsChrome = browser.IS_CHROME;
+  const oldChromeVersion = browser.CHROME_VERSION;
+
+  browser.IS_ANDROID = true;
+  browser.IS_CHROME = true;
+  browser.CHROME_VERSION = '50';
+  assert.strictEqual(Html5.canControlPlaybackRate(), false, 'canControlPlaybackRate should return false on older Chrome');
+
+  browser.CHROME_VERSION = '58';
+  console.info(browser.IS_ANDROID, browser.IS_CHROME, browser.CHROME_VERSION); // eslint-disable-line no-console
+  assert.strictEqual(Html5.canControlPlaybackRate(), true, 'canControlPlaybackRate should return true on newer Chrome');
+
+  browser.IS_ANDROID = oldIsAndroid;
+  browser.IS_CHROME = oldIsChrome;
+  browser.CHROME_VERSION = oldChromeVersion;
+});
+
 QUnit.test('test playbackRate', function(assert) {
   // Android 2.3 always returns 0 for playback rate
   if (!Html5.canControlPlaybackRate()) {
@@ -98,29 +123,6 @@ QUnit.test('test defaultPlaybackRate', function(assert) {
 
   tech.setDefaultPlaybackRate(0.75);
   assert.strictEqual(tech.defaultPlaybackRate(), 0.75, 'can be changed from the API');
-});
-
-QUnit.test('blacklist playbackRate support on older verisons of Chrome on Android', function(assert) {
-  if (!Html5.canControlPlaybackRate()) {
-    assert.ok(true, 'playbackRate is not supported');
-    return;
-  }
-
-  const oldIsAndroid = browser.IS_ANDROID;
-  const oldIsChrome = browser.IS_CHROME;
-  const oldChromeVersion = browser.CHROME_VERSION;
-
-  browser.IS_ANDROID = true;
-  browser.IS_CHROME = true;
-  browser.CHROME_VERSION = '50';
-  assert.strictEqual(Html5.canControlPlaybackRate(), false, 'canControlPlaybackRate should return false on older Chrome');
-
-  browser.CHROME_VERSION = '58';
-  assert.strictEqual(Html5.canControlPlaybackRate(), true, 'canControlPlaybackRate should return true on newer Chrome');
-
-  browser.IS_ANDROID = oldIsAndroid;
-  browser.IS_CHROME = oldIsChrome;
-  browser.CHROME_VERSION = oldChromeVersion;
 });
 
 QUnit.test('test volume', function(assert) {
