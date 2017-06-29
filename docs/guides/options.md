@@ -38,6 +38,7 @@
   * [${techName}](#techname)
     * [nativeControlsForTouch](#nativecontrolsfortouch-1)
     * [nativeTextTracks](#nativetexttracks)
+    * [nativeFullScreen](#nativefullscreen)
 
 ## Standard `<video>` Element Options
 
@@ -373,6 +374,12 @@ Only supported by the `Html5` tech, this option can be set to `true` to force na
 > Type: `boolean`
 
 Can be set to `false` to force emulation of text tracks instead of native support. The `nativeCaptions` option also exists, but is simply an alias to `nativeTextTracks`.
+
+#### `nativeTextTracks`
+
+> Type: `boolean`
+
+Can be set to `false` to prevent the HTML5 tech's native fullscreen from being used. This might be used on iOS where the full-window fake fullscreen is preferable to the native fullscreen.
 
 [plugins]: /docs/guides/plugins.md
 

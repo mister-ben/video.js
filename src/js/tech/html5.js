@@ -455,6 +455,10 @@ class Html5 extends Tech {
    *         - False if fullscreen is not supported.
    */
   supportsFullScreen() {
+    if (this.options_.disableTechFullscreen) {
+      return false;
+    }
+
     if (typeof this.el_.webkitEnterFullScreen === 'function') {
       const userAgent = window.navigator && window.navigator.userAgent || '';
 
