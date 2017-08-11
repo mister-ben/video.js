@@ -741,23 +741,6 @@ class Player extends Component {
    * @listens Tech#loadedmetadata
    */
   updateStyleEl_() {
-    if (window.VIDEOJS_NO_DYNAMIC_STYLE === true) {
-      const width = typeof this.width_ === 'number' ? this.width_ : this.options_.width;
-      const height = typeof this.height_ === 'number' ? this.height_ : this.options_.height;
-      const techEl = this.tech_ && this.tech_.el();
-
-      if (techEl) {
-        if (width >= 0) {
-          techEl.width = width;
-        }
-        if (height >= 0) {
-          techEl.height = height;
-        }
-      }
-
-      return;
-    }
-
     let width;
     let height;
     let aspectRatio;
@@ -796,6 +779,27 @@ class Player extends Component {
     } else {
       // Otherwise calculate the height from the ratio and the width
       height = width * ratioMultiplier;
+    }
+
+    if (window.VIDEOJS_NO_DYNAMIC_STYLE === true) {
+      const techEl = this.tech_ && this.tech_.el();
+
+      if (techEl) {
+        if (width >= 0) {
+          techEl.width = width;
+        }
+        if (height >= 0) {
+          techEl.height = height;
+        }
+        if (this.fluid_) {
+          this.el().style.paddingTop = `${ratioMultiplier * 100}%`;
+        } else {
+          this.el().style.paddingTop = '';
+        }
+
+      }
+
+      return;
     }
 
     // Ensure the CSS class is valid by starting with an alpha character

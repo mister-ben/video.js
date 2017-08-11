@@ -1419,6 +1419,10 @@ QUnit.test('When VIDEOJS_NO_DYNAMIC_STYLE is set, apply sizing directly to the t
 
   assert.equal(player.tech_.el().width, 600, 'the width is equal to 600');
   assert.equal(player.tech_.el().height, 300, 'the height is equal 300');
+
+  player.fluid(true);
+  assert.ok(player.el_.style.paddingTop.indexOf('%') > 0, 'in fluid mode the aspect ratio has been set on the player element padding-top style');
+
   player.dispose();
 });
 
