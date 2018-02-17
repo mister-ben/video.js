@@ -156,3 +156,8 @@ div.section {
 .deprecated {
     color: #990000;
 }
+
+.banner.legacy {
+  background-color: #ff8;
+  text-align: center;
+}
