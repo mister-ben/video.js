@@ -966,7 +966,9 @@ vjs.Player.prototype.requestFullscreen = function(){
         vjs.off(document, fsApi['fullscreenchange'], arguments.callee);
       }
 
-      this.trigger('fullscreenchange');
+      if (e.type !== 'fullscreenchange') {
+        this.trigger('fullscreenchange');
+      }
     }));
 
     this.el_[fsApi.requestFullscreen]();
