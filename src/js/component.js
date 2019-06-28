@@ -144,6 +144,11 @@ class Component {
     this.childIndex_ = null;
     this.childNameIndex_ = null;
 
+    // Remove reference from parent
+    if (this.parentComponent_) {
+      this.parentComponent_.removeChild(this);
+    }
+
     this.parentComponent_ = null;
 
     if (this.el_) {

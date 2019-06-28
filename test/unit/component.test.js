@@ -372,6 +372,19 @@ QUnit.test('should dispose of component and children', function(assert) {
   );
 });
 
+QUnit.test('should remove child from parent on dispose', function(assert) {
+  const comp = new Component(getFakePlayer());
+
+  // Add a child
+  const child = comp.addChild('Component');
+
+  assert.ok(comp.children_.indexOf(child) > -1, 'component was added to parent\' children');
+
+  child.dispose();
+
+  assert.ok(comp.children_.indexOf(child) === -1, 'component was removed from parent\' children');
+});
+
 QUnit.test('should add and remove event listeners to element', function(assert) {
   const comp = new Component(getFakePlayer(), {});
 
