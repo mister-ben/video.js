@@ -1,5 +1,5 @@
 /* eslint-env qunit */
-import VolumeControl from '../../src/js/control-bar/volume-control/volume-control.js';
+import videojs from '../../src/js/video.js'; import VolumeControl from '../../src/js/control-bar/volume-control/volume-control.js';
 import MuteToggle from '../../src/js/control-bar/mute-toggle.js';
 import VolumeBar from '../../src/js/control-bar/volume-control/volume-bar.js';
 import PlayToggle from '../../src/js/control-bar/play-toggle.js';
@@ -184,6 +184,66 @@ QUnit.test('should show or hide playback rate menu button on playback rates chan
   player.trigger('playbackrateschange');
 
   assert.ok(playbackRate.el().className.indexOf('vjs-hidden') >= 0, 'playbackRate is hidden');
+
+  player.dispose();
+  playbackRate.dispose();
+});
+
+QUnit.test('playback rate controls are localised', function(assert) {
+
+  const player = TestHelpers.makePlayer({
+    language: 'de',
+    playbackRates: [1.5, 2.5]
+  });
+  const playbackRate = new PlaybackRateMenuButton(player);
+
+  player.playbackRate(1.5);
+
+  this.clock.tick(1);
+
+  assert.strictEqual(
+    playbackRate.el().querySelector('.vjs-playback-rate-value').innerHTML,
+    '1,5x',
+    'playbackRate button label is 1,5x in German'
+  );
+  assert.strictEqual(
+    playbackRate.menu.children()[1].label,
+    '2,5x',
+    'playbackRate menu item label is 2,5x in German'
+  );
+
+  player.language('en');
+
+  this.clock.tick(1);
+
+  assert.strictEqual(
+    playbackRate.el().querySelector('.vjs-playback-rate-value').innerHTML,
+    '1.5x',
+    'playbackRate button label is 1.5x in English'
+  );
+  assert.strictEqual(
+    playbackRate.menu.children()[1].label,
+    '2.5x',
+    'playbackRate menu item label is 2.5x in English'
+  );
+
+  videojs.addLanguage('ja', {
+    'playback rate display: rate={1}': '{1}倍'
+  });
+  player.language('ja');
+
+  this.clock.tick(1);
+
+  assert.strictEqual(
+    playbackRate.el().querySelector('.vjs-playback-rate-value').innerHTML,
+    '1.5倍',
+    'playbackRate button label is 1.5倍 in Japanese'
+  );
+  assert.strictEqual(
+    playbackRate.menu.children()[1].label,
+    '2.5倍',
+    'playbackRate menu item label is 2.5倍 in Japanese'
+  );
 
   player.dispose();
   playbackRate.dispose();

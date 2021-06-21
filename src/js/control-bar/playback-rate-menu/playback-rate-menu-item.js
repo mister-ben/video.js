@@ -3,6 +3,7 @@
  */
 import MenuItem from '../../menu/menu-item.js';
 import Component from '../../component.js';
+import localizeRate from '../../utils/format-rate.js';
 
 /**
  * The specific menu item type for selecting a playback rate.
@@ -21,8 +22,9 @@ class PlaybackRateMenuItem extends MenuItem {
    *        The key/value store of player options.
    */
   constructor(player, options) {
-    const label = options.rate;
-    const rate = parseFloat(label, 10);
+    const rate = parseFloat(options.rate, 10);
+    // Label set to unlocalised rate initially, just to avoid this before super headache
+    const label = player.localize('playback rate display: rate={1}', [localizeRate(rate, player.language())], '{1}x');
 
     // Modify options for parent MenuItem class's init.
     options.label = label;
@@ -64,6 +66,16 @@ class PlaybackRateMenuItem extends MenuItem {
    */
   update(event) {
     this.selected(this.player().playbackRate() === this.rate);
+  }
+
+  /**
+   * Update label on language change
+   */
+
+  handleLanguagechange(e) {
+    this.label = this.player_.localize('playback rate display: rate={1}', [localizeRate(this.rate, this.player_.language())], '{1}x');
+    this.el_.querySelector('.vjs-menu-item-text').innerHTML = this.label;
+
   }
 
 }

@@ -5,6 +5,7 @@ import MenuButton from '../../menu/menu-button.js';
 import PlaybackRateMenuItem from './playback-rate-menu-item.js';
 import Component from '../../component.js';
 import * as Dom from '../../utils/dom.js';
+import localizeRate from '../../utils/format-rate.js';
 
 /**
  * The component for controlling the playback rate.
@@ -49,7 +50,7 @@ class PlaybackRateMenuButton extends MenuButton {
     this.labelEl_ = Dom.createEl('div', {
       className: 'vjs-playback-rate-value',
       id: this.labelElId_,
-      innerHTML: '1x'
+      innerHTML: this.player_.localize('playback rate display: rate={1}', [localizeRate(1, this.player_.language())], '{1}x')
     });
 
     el.appendChild(this.labelEl_);
@@ -190,14 +191,25 @@ class PlaybackRateMenuButton extends MenuButton {
    */
   updateLabel(event) {
     if (this.playbackRateSupported()) {
-      this.labelEl_.innerHTML = this.player().playbackRate() + 'x';
+      this.labelEl_.innerHTML = this.player_.localize(
+        'playback rate display: rate={1}',
+        [localizeRate(this.player_.playbackRate(), this.player_.language())],
+        '{1}x'
+      );
     }
+  }
+
+  /**
+   * Update localised label on languagechange events
+   */
+  handleLanguagechange(e) {
+    this.updateLabel(e);
   }
 
 }
 
 /**
- * The text that should display over the `FullscreenToggle`s controls. Added for localization.
+ * The text that should display over the `PlaybackRateMenuButton`s controls. Added for localization.
  *
  * @type {string}
  * @private
