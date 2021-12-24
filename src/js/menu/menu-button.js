@@ -4,6 +4,7 @@
 import Button from '../button.js';
 import Component from '../component.js';
 import Menu from './menu.js';
+import MenuPanel from './menu-panel.js';
 import * as Dom from '../utils/dom.js';
 import * as Events from '../utils/events.js';
 import {toTitleCase} from '../utils/string-cases.js';
@@ -75,7 +76,11 @@ class MenuButton extends Component {
     }
 
     this.menu = menu;
-    this.addChild(menu);
+    if (this.player_.options_.menuPanel) {
+      this.player_.addChild(menu);
+    } else {
+      this.addChild(menu);
+    }
 
     /**
      * Track the state of the menu button
@@ -103,7 +108,13 @@ class MenuButton extends Component {
    *         The constructed menu
    */
   createMenu() {
-    const menu = new Menu(this.player_, { menuButton: this });
+    let menu;
+
+    if (this.player_.options_.menuPanel) {
+      menu = new MenuPanel(this.player_, { menuButton: this });
+    } else {
+      menu = new Menu(this.player_, { menuButton: this });
+    }
 
     /**
      * Hide the menu if the number of items is less than or equal to this threshold. This defaults
