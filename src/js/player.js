@@ -1682,8 +1682,6 @@ class Player extends Component {
     this.removeClass('vjs-paused');
     this.addClass('vjs-playing');
 
-    // hide the poster when the user hits play
-    this.hasStarted(true);
     /**
      * Triggered whenever an {@link Tech#play} event happens. Indicates that
      * playback has started or resumed.
@@ -1803,6 +1801,7 @@ class Player extends Component {
      * @event Player#playing
      * @type {EventTarget~Event}
      */
+    this.hasStarted(true);
     this.trigger('playing');
   }
 

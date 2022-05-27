@@ -847,20 +847,24 @@ QUnit.test('should set and update the poster value', function(assert) {
 // hasStarted() is equivalent to the "show poster flag" in the
 // standard, for the purpose of displaying the poster image
 // https://html.spec.whatwg.org/multipage/embedded-content.html#dom-media-play
-QUnit.test('should hide the poster when play is called', function(assert) {
+QUnit.test('should hide the poster when playing is called', function(assert) {
   const player = TestHelpers.makePlayer({
     poster: 'https://example.com/poster.jpg'
   });
 
   assert.equal(player.hasStarted(), false, 'the show poster flag is true before play');
   player.tech_.trigger('play');
-  assert.equal(player.hasStarted(), true, 'the show poster flag is false after play');
+  assert.equal(player.hasStarted(), false, 'the show poster flag is true after play');
+  player.tech_.trigger('playing');
+  assert.equal(player.hasStarted(), true, 'the show poster flag is false after playing');
 
   player.tech_.trigger('loadstart');
   assert.equal(player.hasStarted(), false, 'the resource selection algorithm sets the show poster flag to true');
 
   player.tech_.trigger('play');
-  assert.equal(player.hasStarted(), true, 'the show poster flag is false after play');
+  assert.equal(player.hasStarted(), false, 'the show poster flag is false after play');
+  player.tech_.trigger('playing');
+  assert.equal(player.hasStarted(), true, 'the show poster flag is false after playing');
   player.dispose();
 });
 
@@ -1055,6 +1059,17 @@ QUnit.test('should register players with generated ids', function(assert) {
   player.dispose();
 });
 
+QUnit.test('should add vjs-has-started class after `playing`', function(assert) {
+  const player = TestHelpers.makePlayer({});
+
+  player.tech_.trigger('loadstart');
+  player.tech_.trigger('play');
+  assert.ok(player.el().className.indexOf('vjs-has-started') === -1, 'vjs-has-started class not present');
+
+  player.tech_.trigger('playing');
+  assert.ok(player.el().className.indexOf('vjs-has-started') !== -1, 'vjs-has-started class added');
+});
+
 QUnit.test('should remove vjs-has-started class', function(assert) {
   assert.expect(3);
 
@@ -1062,12 +1077,14 @@ QUnit.test('should remove vjs-has-started class', function(assert) {
 
   player.tech_.trigger('loadstart');
   player.tech_.trigger('play');
+  player.tech_.trigger('playing');
   assert.ok(player.el().className.indexOf('vjs-has-started') !== -1, 'vjs-has-started class added');
 
   player.tech_.trigger('loadstart');
   assert.ok(player.el().className.indexOf('vjs-has-started') === -1, 'vjs-has-started class removed');
 
   player.tech_.trigger('play');
+  player.tech_.trigger('playing');
 
   assert.ok(player.el().className.indexOf('vjs-has-started') !== -1, 'vjs-has-started class added again');
   player.dispose();
