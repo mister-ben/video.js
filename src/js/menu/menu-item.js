@@ -107,6 +107,9 @@ class MenuItem extends ClickableComponent {
    */
   handleClick(event) {
     this.selected(true);
+    if (this.player_.options_.useMenuPanel) {
+      this.player_.getChild('MenuPanel').close();
+    }
   }
 
   /**

@@ -54,12 +54,14 @@ class MenuButton extends Component {
     this.on(this.menuButton_, 'tap', handleClick);
     this.on(this.menuButton_, 'click', handleClick);
     this.on(this.menuButton_, 'keydown', (e) => this.handleKeyDown(e));
-    this.on(this.menuButton_, 'mouseenter', () => {
-      this.addClass('vjs-hover');
-      this.menu.show();
-      Events.on(document, 'keyup', this.handleMenuKeyUp_);
-    });
-    this.on('mouseleave', (e) => this.handleMouseLeave(e));
+    if (!player.options_.useMenuPanel) {
+      this.on(this.menuButton_, 'mouseenter', () => {
+        this.addClass('vjs-hover');
+        this.menu.show();
+        Events.on(document, 'keyup', this.handleMenuKeyUp_);
+      });
+      this.on('mouseleave', (e) => this.handleMouseLeave(e));
+    }
     this.on('keydown', (e) => this.handleSubmenuKeyDown(e));
   }
 
@@ -366,6 +368,13 @@ class MenuButton extends Component {
    * Put the current `MenuButton` into a pressed state.
    */
   pressButton() {
+    if (this.player_.options_.useMenuPanel) {
+      this.player_.getChild('MenuPanel').open();
+      this.player_.getChild('MenuPanel').fillWith(this.menu.el_);
+      this.menu.show();
+      return;
+    }
+
     if (this.enabled_) {
       this.buttonPressed_ = true;
       this.menu.show();

@@ -1,0 +1,12 @@
+.vjs-modal-dialog.vjs-menu-panel {
+  right: 0;
+  left: auto;
+  width: 40%;
+}
+
+.vjs-tech {
+  transition: width .5s;
+}
+.vjs-menu-panel-showing .vjs-tech {
+  width: 60%;
+}
