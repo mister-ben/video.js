@@ -56,7 +56,7 @@ class BigPlayButton extends Button {
          // We've observed a bug in IE and Edge when playing back DRM content where
          // calling .focus() on the video element causes the video to go black,
          // so we avoid it in that specific case
-         !((browser.IE_VERSION || browser.IS_EDGE) && sourceIsEncrypted)) {
+         !(browser.IS_EDGE && sourceIsEncrypted)) {
         this.player_.tech(true).focus();
       }
       return;
