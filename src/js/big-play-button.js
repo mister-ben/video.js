@@ -43,6 +43,11 @@ class BigPlayButton extends Button {
    * @listens click
    */
   handleClick(event) {
+    if (!this.player_.paused()) {
+      this.player_.pause();
+      return;
+    }
+
     const playPromise = this.player_.play();
 
     // exit early if clicked via the mouse
