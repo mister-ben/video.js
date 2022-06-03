@@ -349,6 +349,11 @@ class Player extends Component {
       }
     }
 
+    if (options.useMenuPanel) {
+      console.log(options);
+      //options.children.append('MenuPanel');
+    }
+
     // Run base component initializing with new options
     super(null, options, ready);
 
@@ -394,18 +399,6 @@ class Player extends Component {
 
     // Init debugEnabled_
     this.debugEnabled_ = false;
-
-    // Init state audioOnlyMode_
-    this.audioOnlyMode_ = false;
-
-    // Init state audioPosterMode_
-    this.audioPosterMode_ = false;
-
-    // Init state audioOnlyCache_
-    this.audioOnlyCache_ = {
-      playerHeight: null,
-      hiddenChildren: []
-    };
 
     // if the global option object was accidentally blown away by
     // someone, bail early with an informative error
@@ -586,15 +579,6 @@ class Player extends Component {
 
     this.breakpoints(this.options_.breakpoints);
     this.responsive(this.options_.responsive);
-
-    // Calling both the audio mode methods after the player is fully
-    // setup to be able to listen to the events triggered by them
-    this.on('ready', () => {
-      // Calling the audioPosterMode method first so that
-      // the audioOnlyMode can take precedence when both options are set to true
-      this.audioPosterMode(this.options_.audioPosterMode);
-      this.audioOnlyMode(this.options_.audioOnlyMode);
-    });
   }
 
   /**
@@ -666,8 +650,8 @@ class Player extends Component {
       }
     });
 
-    // the actual .el_ is removed here, or replaced if
-    super.dispose({restoreEl: this.options_.restoreEl});
+    // the actual .el_ is removed here
+    super.dispose();
   }
 
   /**
@@ -819,6 +803,8 @@ class Player extends Component {
     // Breaks iPhone, fixed in HTML5 setup.
     Dom.prependTo(tag, el);
     this.children_.unshift(tag);
+
+    console.log(this.children_);
 
     // Set lang attr on player to ensure CSS :lang() in consistent with player
     // if it's been set to something different to the doc
@@ -1112,7 +1098,7 @@ class Player extends Component {
         height: ${height}px;
       }
 
-      .${idClass}.vjs-fluid:not(.vjs-audio-only-mode) {
+      .${idClass}.vjs-fluid {
         padding-top: ${ratioMultiplier * 100}%;
       }
     `);
@@ -2145,10 +2131,7 @@ class Player extends Component {
   handleTechFullscreenChange_(event, data) {
     if (data) {
       if (data.nativeIOSFullscreen) {
-        this.addClass('vjs-ios-native-fs');
-        this.tech_.one('webkitendfullscreen', () => {
-          this.removeClass('vjs-ios-native-fs');
-        });
+        this.toggleClass('vjs-ios-native-fs');
       }
       this.isFullscreen(data.isFullscreen);
     }
@@ -3605,7 +3588,7 @@ class Player extends Component {
   resetProgressBar_() {
     this.currentTime(0);
 
-    const { durationDisplay, remainingTimeDisplay } = this.controlBar || {};
+    const { durationDisplay, remainingTimeDisplay } = this.controlBar;
 
     if (durationDisplay) {
       durationDisplay.updateContent();
@@ -4312,184 +4295,6 @@ class Player extends Component {
     }
 
     return !!this.isAudio_;
-  }
-
-  enableAudioOnlyUI_() {
-    // Update styling immediately to show the control bar so we can get its height
-    this.addClass('vjs-audio-only-mode');
-
-    const playerChildren = this.children();
-    const controlBar = this.getChild('ControlBar');
-    const controlBarHeight = controlBar && controlBar.currentHeight();
-
-    // Hide all player components except the control bar. Control bar components
-    // needed only for video are hidden with CSS
-    playerChildren.forEach(child => {
-      if (child === controlBar) {
-        return;
-      }
-
-      if (child.el_ && !child.hasClass('vjs-hidden')) {
-        child.hide();
-
-        this.audioOnlyCache_.hiddenChildren.push(child);
-      }
-    });
-
-    this.audioOnlyCache_.playerHeight = this.currentHeight();
-
-    // Set the player height the same as the control bar
-    this.height(controlBarHeight);
-    this.trigger('audioonlymodechange');
-  }
-
-  disableAudioOnlyUI_() {
-    this.removeClass('vjs-audio-only-mode');
-
-    // Show player components that were previously hidden
-    this.audioOnlyCache_.hiddenChildren.forEach(child => child.show());
-
-    // Reset player height
-    this.height(this.audioOnlyCache_.playerHeight);
-    this.trigger('audioonlymodechange');
-  }
-
-  /**
-   * Get the current audioOnlyMode state or set audioOnlyMode to true or false.
-   *
-   * Setting this to `true` will hide all player components except the control bar,
-   * as well as control bar components needed only for video.
-   *
-   * @param {boolean} [value]
-   *         The value to set audioOnlyMode to.
-   *
-   * @return {Promise|boolean}
-   *        A Promise is returned when setting the state, and a boolean when getting
-   *        the present state
-   */
-  audioOnlyMode(value) {
-    if (typeof value !== 'boolean' || value === this.audioOnlyMode_) {
-      return this.audioOnlyMode_;
-    }
-
-    this.audioOnlyMode_ = value;
-
-    const PromiseClass = this.options_.Promise || window.Promise;
-
-    if (PromiseClass) {
-      // Enable Audio Only Mode
-      if (value) {
-        const exitPromises = [];
-
-        // Fullscreen and PiP are not supported in audioOnlyMode, so exit if we need to.
-        if (this.isInPictureInPicture()) {
-          exitPromises.push(this.exitPictureInPicture());
-        }
-
-        if (this.isFullscreen()) {
-          exitPromises.push(this.exitFullscreen());
-        }
-
-        if (this.audioPosterMode()) {
-          exitPromises.push(this.audioPosterMode(false));
-        }
-
-        return PromiseClass.all(exitPromises).then(() => this.enableAudioOnlyUI_());
-      }
-
-      // Disable Audio Only Mode
-      return PromiseClass.resolve().then(() => this.disableAudioOnlyUI_());
-    }
-
-    if (value) {
-      if (this.isInPictureInPicture()) {
-        this.exitPictureInPicture();
-      }
-
-      if (this.isFullscreen()) {
-        this.exitFullscreen();
-      }
-
-      this.enableAudioOnlyUI_();
-    } else {
-      this.disableAudioOnlyUI_();
-    }
-  }
-
-  enablePosterModeUI_() {
-    // Hide the video element and show the poster image to enable posterModeUI
-    const tech = this.tech_ && this.tech_;
-
-    tech.hide();
-    this.addClass('vjs-audio-poster-mode');
-    this.trigger('audiopostermodechange');
-  }
-
-  disablePosterModeUI_() {
-    // Show the video element and hide the poster image to disable posterModeUI
-    const tech = this.tech_ && this.tech_;
-
-    tech.show();
-    this.removeClass('vjs-audio-poster-mode');
-    this.trigger('audiopostermodechange');
-  }
-
-  /**
-   * Get the current audioPosterMode state or set audioPosterMode to true or false
-   *
-   * @param {boolean} [value]
-   *         The value to set audioPosterMode to.
-   *
-   * @return {Promise|boolean}
-   *         A Promise is returned when setting the state, and a boolean when getting
-   *        the present state
-   */
-  audioPosterMode(value) {
-
-    if (typeof value !== 'boolean' || value === this.audioPosterMode_) {
-      return this.audioPosterMode_;
-    }
-
-    this.audioPosterMode_ = value;
-
-    const PromiseClass = this.options_.Promise || window.Promise;
-
-    if (PromiseClass) {
-
-      if (value) {
-
-        if (this.audioOnlyMode()) {
-          const audioOnlyModePromise = this.audioOnlyMode(false);
-
-          return audioOnlyModePromise.then(() => {
-            // enable audio poster mode after audio only mode is disabled
-            this.enablePosterModeUI_();
-          });
-        }
-
-        return PromiseClass.resolve().then(() => {
-          // enable audio poster mode
-          this.enablePosterModeUI_();
-        });
-      }
-
-      return PromiseClass.resolve().then(() => {
-        // disable audio poster mode
-        this.disablePosterModeUI_();
-      });
-    }
-
-    if (value) {
-
-      if (this.audioOnlyMode()) {
-        this.audioOnlyMode(false);
-      }
-
-      this.enablePosterModeUI_();
-      return;
-    }
-
-    this.disablePosterModeUI_();
   }
 
   /**
@@ -5298,9 +5103,7 @@ Player.prototype.options_ = {
   },
 
   breakpoints: {},
-  responsive: false,
-  audioOnlyMode: false,
-  audioPosterMode: false
+  responsive: false
 };
 
 [
