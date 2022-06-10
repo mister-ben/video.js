@@ -1116,12 +1116,6 @@ Html5.canMuteVolume = function() {
  *         - False otherwise
  */
 Html5.canControlPlaybackRate = function() {
-  // Playback rate API is implemented in Android Chrome, but doesn't do anything
-  // https://github.com/videojs/video.js/issues/3180
-  if (browser.IS_ANDROID && browser.IS_CHROME && browser.CHROME_VERSION && browser.CHROME_VERSION < 58) {
-    return false;
-  }
-  // IE will error if Windows Media Player not installed #3315
   try {
     const playbackRate = Html5.TEST_VID.playbackRate;
 
