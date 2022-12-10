@@ -45,6 +45,10 @@
 
 @import "print";
 
+.video-js {
+  --vjs-ui-font: Arial, Helvetica, sans-serif;
+}
+
 .vjs-resize-manager {
   position: absolute;
   top: 0;
