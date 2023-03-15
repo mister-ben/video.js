@@ -38,6 +38,10 @@ import Tech from './tech/tech.js';
 import { use as middlewareUse, TERMINATOR } from './tech/middleware.js';
 
 /**
+ * @typedef { import('./player').VideoJsPlayerOptions } VideoJsPlayerOptions
+ * /
+
+/**
  * Normalize an `id` value by trimming off a leading `#`
  *
  * @private
@@ -113,7 +117,7 @@ const normalizeId = (id) => id.indexOf('#') === 0 ? id.slice(1) : id;
  * @param  {string|Element} id
  *         Video element or video element ID.
  *
- * @param  {Object} [options]
+ * @param  {VideoJsPlayerOptions} [options]
  *         Options object for providing settings.
  *         See: [Options Guide](https://docs.videojs.com/tutorial-options.html).
  *
@@ -229,7 +233,7 @@ videojs.VERSION = version;
  * The global options object. These are the settings that take effect
  * if no overrides are specified when the player is created.
  *
- * @type {Object}
+ * @type {VideoJsPlayerOptions}
  */
 videojs.options = Player.prototype.options_;
 
@@ -606,5 +610,9 @@ videojs.str = Str;
  * @see {@link module:url|url}
  */
 videojs.url = Url;
+
+/**
+ * @typedef { import('./player').default } VideoJsPlayer
+ */
 
 export default videojs;

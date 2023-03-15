@@ -16,7 +16,24 @@ import keycode from 'keycode';
 /**
  * @typedef { import('./player').default } Player
  * @typedef { import('./event-target').Event} Event
-*/
+ *
+ * @typedef {String|Child} Child A child component
+ * @property {String} [name] The name of a component
+ * @property {Child[]} [children]
+ *
+ * @typedef {Object} ComponentOptions Options for a Video.js Component
+ * @property {Child[]} [children] Child components
+ * @property {String} [className] A class or space separated list of classes to add the component
+ * @property {String} [id] id for the component element
+ * @property {String} [name] name of the component
+ * @property {Element} [el] The component's element
+ * @property {Boolean} [createEl] Whether to create an elemeent if none is provided
+ * @property {Boolean} [evented] Whether the component has event listeners
+ * @property {Boolean} [initChildren] Whether to initialize child components
+ * @property {Boolean} [reportTouchActivity] Whether to set up listeners for touch events where supported
+ * @property {Boolean|Element} [restoreEl] If Boolean, whether to replace a disposed player with a copy of the original el. Or an element to use as the replacement.
+ *
+ */
 
 /**
  * Base class for all UI Components.

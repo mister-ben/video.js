@@ -8,6 +8,7 @@ import keycode from 'keycode';
 
 /**
  * @typedef { import('./player').default } Player
+ * @typedef { import('./component').ComponentOptions } ComponentOptions
  */
 
 /**
@@ -24,7 +25,7 @@ class ClickableComponent extends Component {
    * @param  {Player} player
    *         The `Player` that this class should be attached to.
    *
-   * @param  {Object} [options]
+   * @param  {ComponentOptions} [options]
    *         The key/value store of component options.
    *
    * @param  {function} [options.clickHandler]
