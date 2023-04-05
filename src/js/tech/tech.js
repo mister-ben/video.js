@@ -22,6 +22,8 @@ import * as Guid from '../utils/guid.js';
  * * `var SourceObject = {src: 'http://ex.com/video.mp4', type: 'video/mp4'};`
    * `var SourceString = 'http://example.com/some-video.mp4';`
  *
+ * // NB: The tilde namespace breaks Typescript, we would have to change this to just `SourceObject`
+ *
  * @typedef {Object|string} Tech~SourceObject
  *
  * @property {string} src

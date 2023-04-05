@@ -14,6 +14,20 @@ import {merge} from './utils/obj.js';
 import keycode from 'keycode';
 
 /**
+ * @typedef {object} ComponentOptions Options for a Video.js Component
+ * @property {object} [children] Child components
+ * @property {string} [className] A class or space separated list of classes to add the component
+ * @property {String} [id] id for the component element
+ * @property {string} [name] name of the component
+ * @property {Element} [el] The component's element
+ * @property {boolean} [createEl] Whether to create an elemeent if none is provided
+ * @property {boolean} [evented] Whether the component has event listeners
+ * @property {boolean} [initChildren] Whether to initialize child components
+ * @property {boolean} [reportTouchActivity] Whether to set up listeners for touch events where supported
+ * @property {boolean|Element} [restoreEl] If Boolean, whether to replace a disposed player with a copy of the original el. Or an element to use as the replacement.
+*/
+
+/**
  * Base class for all UI Components.
  * Components are UI objects which represent both a javascript object and an element
  * in the DOM. They can be children of other components, and can have
@@ -37,16 +51,8 @@ class Component {
    * @param { import('./player').default } player
    *        The `Player` that this class should be attached to.
    *
-   * @param {Object} [options]
+   * @param {ComponentOptions} [options]
    *        The key/value store of component options.
-   *
-   * @param {Object[]} [options.children]
-   *        An array of children objects to initialize this component with. Children objects have
-   *        a name property that will be used if more than one component of the same type needs to be
-   *        added.
-   *
-   * @param  {string} [options.className]
-   *         A class or space separated list of classes to add the component
    *
    * @param {ReadyCallback} [ready]
    *        Function that gets called when the `Component` is ready.

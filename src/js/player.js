@@ -299,7 +299,7 @@ class Player extends Component {
    * @param {Element} tag
    *        The original video DOM element used for configuring options.
    *
-   * @param {Object} [options]
+   * @param {import('./types').PlayerOptions} [options]
    *        Object of option names and values.
    *
    * @param {Function} [ready]

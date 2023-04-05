@@ -113,7 +113,7 @@ const normalizeId = (id) => id.indexOf('#') === 0 ? id.slice(1) : id;
  * @param  {string|Element} id
  *         Video element or video element ID.
  *
- * @param  {Object} [options]
+ * @param  { import('./types').PlayerOptions } [options]
  *         Options object for providing settings.
  *         See: [Options Guide](https://docs.videojs.com/tutorial-options.html).
  *
