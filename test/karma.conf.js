@@ -20,6 +20,27 @@ module.exports = function(config) {
         return {};
       }
 
+      /* eslint-disable camelcase */
+      defaults.bsChrome.os_version = '11';
+      defaults.bsFirefox.os_version = '11';
+      defaults.bsSafari16 = {
+        'base': 'BrowserStack',
+        'browser': 'safari',
+        'os': 'OS X',
+        'os_version': 'Ventura',
+        'browserstack.local': 'false',
+        'browserstack.video': 'false'
+      }; defaults.bsChromeOld = {
+        'base': 'BrowserStack',
+        'browser': 'chrome',
+        'browser_version': '53',
+        'os': 'Windows',
+        'os_version': '11',
+        'browserstack.local': 'false',
+        'browserstack.video': 'false'
+      };
+      delete defaults.bsSafari12;
+
       return defaults;
     },
     coverage: CI_TEST_TYPE === 'coverage' ? true : false

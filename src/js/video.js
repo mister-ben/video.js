@@ -2,7 +2,7 @@
  * @file video.js
  * @module videojs
  */
-import {version} from '../../package.json';
+import packageJson from '../../package.json';
 import window from 'global/window';
 import {
   hooks_,
@@ -222,6 +222,9 @@ if (window.VIDEOJS_NO_DYNAMIC_STYLE !== true && Dom.isReal()) {
 // You have to wait at least once in case this script is loaded after your
 // video in the DOM (weird behavior only with minified version)
 setup.autoSetupTimeout(1, videojs);
+
+/** @type {string} */
+const version = packageJson.version;
 
 /**
  * Current Video.js version. Follows [semantic versioning](https://semver.org/).
