@@ -56,7 +56,16 @@ class Button extends ClickableComponent {
 
     this.createControlTextEl(el);
 
+    log(this.blah(47));
+
     return el;
+  }
+
+  blah(thing) {
+    const a = 'asdfkjahfd;kajf;akjds;fakdsgja;';
+    const y = a.length;
+
+    return y * thing;
   }
 
   /**
