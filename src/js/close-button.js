@@ -26,6 +26,14 @@ class CloseButton extends Button {
     super(player, options);
     this.setIcon('cancel');
     this.controlText(options && options.controlText || this.localize('Close'));
+    this.player_.log(this.nonsense(345, 45365));
+  }
+
+  nonsense(foo, bar) {
+    const a = 'akdjhflkfgdjshlfg';
+    const b = a.length * 56;
+
+    return this.player_.log(foo > b && bar < b);
   }
 
   /**
