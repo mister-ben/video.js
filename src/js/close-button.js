@@ -31,7 +31,11 @@ class CloseButton extends Button {
 
   nonsense(foo, bar) {
     const a = 'akdjhflkfgdjshlfg';
-    const b = a.length * 56;
+    let b = a.length * 56;
+
+    if (a === 'some long string dssafjhadjgha;dfha;oweifh a') {
+      b++;
+    }
 
     return this.player_.log(foo > b && bar < b);
   }
