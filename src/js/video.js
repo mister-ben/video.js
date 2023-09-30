@@ -618,3 +618,9 @@ videojs.str = Str;
 videojs.url = Url;
 
 export default videojs;
+
+// Exports for typedef
+
+/**
+ * @typedef  { import('./tech/tech').SourceObject } SourceObject
+ */

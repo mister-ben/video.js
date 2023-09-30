@@ -56,6 +56,11 @@ import './title-bar.js';
 // Import Html5 tech, at least for disposing the original video tag.
 import './tech/html5.js';
 
+// Import SourceObject type definition
+/**
+ * @typedef { import('./tech/tech').SourceObject } SourceObject
+ */
+
 // The following tech events are simply re-triggered
 // on the player when they happen
 const TECH_EVENTS_RETRIGGER = [
@@ -1514,7 +1519,7 @@ class Player extends Component {
    *         in the current `currentSources` cache.
    *
    *
-   * @param {Tech~SourceObject} srcObj
+   * @param {SourceObject|string} srcObj
    *        A string or object source to update our caches to.
    */
   updateSourceCaches_(srcObj = '') {
@@ -3388,7 +3393,7 @@ class Player extends Component {
   /**
    * Executes source setting and getting logic
    *
-   * @param {Tech~SourceObject|Tech~SourceObject[]|string} [source]
+   * @param {SourceObject|SourceObject[]|string} [source]
    *        A SourceObject, an array of SourceObjects, or a string referencing
    *        a URL to a media source. It is _highly recommended_ that an object
    *        or array of objects is used here, so that source selection
@@ -3499,7 +3504,7 @@ class Player extends Component {
   /**
    * Get or set the video source.
    *
-   * @param {Tech~SourceObject|Tech~SourceObject[]|string} [source]
+   * @param  { SourceObject | SourceObject[] | string } [source]
    *        A SourceObject, an array of SourceObjects, or a string referencing
    *        a URL to a media source. It is _highly recommended_ that an object
    *        or array of objects is used here, so that source selection
@@ -3519,7 +3524,7 @@ class Player extends Component {
    * Set the source object on the tech, returns a boolean that indicates whether
    * there is a tech that can play the source or not
    *
-   * @param {Tech~SourceObject} source
+   * @param {SourceObject} source
    *        The source object to set on the Tech
    *
    * @return {boolean}
@@ -3673,7 +3678,7 @@ class Player extends Component {
   /**
    * Returns all of the current source objects.
    *
-   * @return {Tech~SourceObject[]}
+   * @return {SourceObject[]}
    *         The current source objects
    */
   currentSources() {
@@ -3691,7 +3696,7 @@ class Player extends Component {
   /**
    * Returns the current source object.
    *
-   * @return {Tech~SourceObject}
+   * @return {SourceObject}
    *         The current source object
    */
   currentSource() {
@@ -4921,7 +4926,7 @@ class Player extends Component {
    * @property {string} [poster]
    *           URL to an image that will display before playback.
    *
-   * @property {Tech~SourceObject|Tech~SourceObject[]|string} [src]
+   * @property {SourceObject|SourceObject[]|string} [src]
    *           A single source object, an array of source objects, or a string
    *           referencing a URL to a media source. It is _highly recommended_
    *           that an object or array of objects is used here, so that source

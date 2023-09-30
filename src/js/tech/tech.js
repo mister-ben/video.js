@@ -17,18 +17,19 @@ import vtt from 'videojs-vtt.js';
 import * as Guid from '../utils/guid.js';
 
 /**
- * An Object containing a structure like: `{src: 'url', type: 'mimetype'}` or string
+ * An object containing a structure like: `{src: 'url', type: 'mimetype'}` or string
  * that just contains the src url alone.
- * * `var SourceObject = {src: 'http://ex.com/video.mp4', type: 'video/mp4'};`
-   * `var SourceString = 'http://example.com/some-video.mp4';`
+ * An object may contain source-specific properties
  *
- * @typedef {Object|string} SourceObject
- *
- * @property {string} src
- *           The url to the source
- *
- * @property {string} type
- *           The mime type of the source
+ * @typedef {object} SourceObject
+ * @property {string} src Source URL
+ * @property {string} type Content type
+ * @property {boolean} [withCredentials] [VHS] use credentials for XHR requests
+ * @property {boolean} [allowSeeksWithinUnsafeLiveWindow] (VHS) Allow a seek beyond duration - three segment durations of a live stream
+ * @property {array} [customTagParsers] [VHS] Array of custom m3u8 tag parser objects
+ * @property {array} [customTagMappers] [VHS] Array of custom m3u8 tag mapper objects
+ * @property {boolean} [cacheEncryptionKeys] [VHS] Cache AES keys
+ * @property {boolean} [useForcedSubtitles] [VHS] Display forced subtitles
  */
 
 /**
