@@ -56,9 +56,8 @@ import './title-bar.js';
 // Import Html5 tech, at least for disposing the original video tag.
 import './tech/html5.js';
 
-// Import SourceObject type definition
 /**
- * @typedef { import('./tech/tech').SourceObject } SourceObject
+ * @typedef {import('./video.js'.VideoJsSourceObject)} SourceObject
  */
 
 // The following tech events are simply re-triggered
@@ -305,7 +304,7 @@ class Player extends Component {
    * @param {Element} tag
    *        The original video DOM element used for configuring options.
    *
-   * @param {Object} [options]
+   * @param {import('./video.js').PlayerOptions} [options]
    *        Object of option names and values.
    *
    * @param {Function} [ready]

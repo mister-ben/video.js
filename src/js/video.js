@@ -36,6 +36,10 @@ import * as Url from './utils/url.js';
 import * as Obj from './utils/obj';
 import xhr from '@videojs/xhr';
 
+// Type imports
+// eslint-disable-next-line no-unused-vars
+import * as Types from './types.js';
+
 // Include the built-in techs
 import Tech from './tech/tech.js';
 import { use as middlewareUse, TERMINATOR } from './tech/middleware.js';
@@ -116,7 +120,7 @@ const normalizeId = (id) => id.indexOf('#') === 0 ? id.slice(1) : id;
  * @param  {string|Element} id
  *         Video element or video element ID.
  *
- * @param  {Object} [options]
+ * @param  {PlayerOptions} [options]
  *         Options object for providing settings.
  *         See: [Options Guide](https://docs.videojs.com/tutorial-options.html).
  *
@@ -619,8 +623,12 @@ videojs.url = Url;
 
 export default videojs;
 
-// Exports for typedef
-
+// Exports for typedef with a namespace prefix
+// import type {VideoJsSourceObject} from 'video.js';
 /**
- * @typedef  { import('./tech/tech').SourceObject } SourceObject
+ * @typedef  {Types.SourceObject} VideoJsSourceObject
  */
+/**
+ * @typedef  {Types.PlayerOptions} PlayerOptions
+ */
+

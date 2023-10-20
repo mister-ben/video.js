@@ -16,21 +16,8 @@ import {toTitleCase, toLowerCase} from '../utils/str.js';
 import vtt from 'videojs-vtt.js';
 import * as Guid from '../utils/guid.js';
 
-/**
- * An object containing a structure like: `{src: 'url', type: 'mimetype'}` or string
- * that just contains the src url alone.
- * An object may contain source-specific properties
- *
- * @typedef {object} SourceObject
- * @property {string} src Source URL
- * @property {string} type Content type
- * @property {boolean} [withCredentials] [VHS] use credentials for XHR requests
- * @property {boolean} [allowSeeksWithinUnsafeLiveWindow] (VHS) Allow a seek beyond duration - three segment durations of a live stream
- * @property {array} [customTagParsers] [VHS] Array of custom m3u8 tag parser objects
- * @property {array} [customTagMappers] [VHS] Array of custom m3u8 tag mapper objects
- * @property {boolean} [cacheEncryptionKeys] [VHS] Cache AES keys
- * @property {boolean} [useForcedSubtitles] [VHS] Display forced subtitles
- */
+// eslint-disable-next-line no-unused-vars
+import * as Types from './types.js';
 
 /**
  * A function used by {@link Tech} to create a new {@link TextTrack}.
@@ -1281,7 +1268,7 @@ Tech.withSourceHandlers = function(_Tech) {
    *
    * TODO: Answer question: should 'probably' be prioritized over 'maybe'
    *
-   * @param {SourceObject} source
+   * @param {Types.SourceObject} source
    *        The source object
    *
    * @param {Object} options
@@ -1309,7 +1296,7 @@ Tech.withSourceHandlers = function(_Tech) {
   /**
    * Check if the tech can support the given source.
    *
-   * @param {SourceObject} srcObj
+   * @param {Types.SourceObject} srcObj
    *        The source object
    *
    * @param {Object} options
@@ -1372,7 +1359,7 @@ Tech.withSourceHandlers = function(_Tech) {
    * and source handlers.
    * Should never be called unless a source handler was found.
    *
-   * @param {SourceObject} source
+   * @param {Types.SourceObject} source
    *        A source object with src and type keys
    */
   _Tech.prototype.setSource = function(source) {

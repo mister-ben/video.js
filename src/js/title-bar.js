@@ -1,4 +1,6 @@
 import Component from './component';
+// eslint-disable-next-line no-unused-vars
+import Tech from './tech/tech';
 import * as Dom from './utils/dom';
 import * as Guid from './utils/guid';
 import * as Obj from './utils/obj';
@@ -23,7 +25,7 @@ class TitleBar extends Component {
   /**
    * Create the `TitleBar`'s DOM element
    *
-   * @return {Element}
+   * @return {HTMLDivElement}
    *         The element that was created.
    */
   createEl() {
@@ -47,7 +49,9 @@ class TitleBar extends Component {
    * Updates the DOM based on the component's state object.
    */
   updateDom_() {
+    /** @type {Tech} */
     const tech = this.player_.tech_;
+    /** @type {Element} */
     const techEl = tech && tech.el_;
     const techAriaAttrs = {
       title: 'aria-labelledby',
