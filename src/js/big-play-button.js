@@ -51,7 +51,7 @@ class BigPlayButton extends Button {
       silencePromise(playPromise);
 
       if (this.player_.tech(true)) {
-        this.player_.tech(true).focus();
+        this.player_.tech(true).focus({ preventScroll: true });
       }
 
       return;
@@ -61,11 +61,11 @@ class BigPlayButton extends Button {
     const playToggle = cb && cb.getChild('playToggle');
 
     if (!playToggle) {
-      this.player_.tech(true).focus();
+      this.player_.tech(true).focus({ preventScroll: true });
       return;
     }
 
-    const playFocus = () => playToggle.focus();
+    const playFocus = () => playToggle.focus({ preventScroll: true });
 
     if (isPromise(playPromise)) {
       playPromise.then(playFocus, () => {});

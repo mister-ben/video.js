@@ -1285,9 +1285,11 @@ class Component {
 
   /**
    * Set the focus to this component
+   *
+   * @param {FocusOptions} opts
    */
-  focus() {
-    this.el_.focus();
+  focus(opts) {
+    this.el_.focus(opts);
   }
 
   /**
