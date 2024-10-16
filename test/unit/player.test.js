@@ -816,6 +816,36 @@ QUnit.test('should wrap the original tag in the player div', function(assert) {
   player.dispose();
 });
 
+QUnit.test('tech posters are not used on iOS', function(assert) {
+  const posterUri = 'https://example.com/poster.jpg';
+
+  browser.stub_IS_IOS(true);
+
+  const tag = TestHelpers.makeTag();
+
+  tag.setAttribute('poster', posterUri);
+
+  const player = TestHelpers.makePlayer({techOrder: ['html5']}, tag);
+
+  assert.strictEqual(player.poster(), posterUri, 'poster is set on iOS');
+  assert.false(player.tech().el().hasAttribute('poster'), 'poster attribute is not present on video el on iOS');
+
+  player.dispose();
+  browser.stub_IS_IOS(false);
+
+  const tag2 = TestHelpers.makeTag();
+
+  tag2.setAttribute('poster', posterUri);
+
+  const player2 = TestHelpers.makePlayer({techOrder: ['html5']}, tag2);
+
+  assert.strictEqual(player2.poster(), posterUri, 'poster is set on non-iOS');
+  assert.true(player2.tech().el().hasAttribute('poster'), 'poster attribute is present on video el on non-iOS');
+
+  player2.dispose();
+  browser.reset_IS_IOS();
+});
+
 QUnit.test('should set and update the poster value', function(assert) {
   const poster = '#';
   const updatedPoster = 'http://example.com/updated-poster.jpg';
