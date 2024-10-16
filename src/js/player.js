@@ -447,7 +447,11 @@ class Player extends Component {
 
     // Set poster
     /** @type string */
-    this.poster_ = options.poster || '';
+    this.poster_ = options.poster || tag.getAttribute('poster') || '';
+
+    if (browser.IS_IOS) {
+      tag.removeAttribute('poster');
+    }
 
     // Set controls
     /** @type {boolean} */
@@ -4063,7 +4067,9 @@ class Player extends Component {
     this.poster_ = src;
 
     // update the tech's poster
-    this.techCall_('setPoster', src);
+    if (!browser.IS_IOS) {
+      this.techCall_('setPoster', src);
+    }
 
     this.isPosterFromTech_ = false;
 
