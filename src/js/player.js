@@ -447,8 +447,9 @@ class Player extends Component {
 
     // Set poster
     /** @type string */
-    this.poster_ = options.poster || tag.getAttribute('poster') || '';
+    this.poster_ = options.poster || '';
 
+    // Webm videos won't play in iOS web views if there is a poster attr
     if (browser.IS_IOS) {
       tag.removeAttribute('poster');
     }
