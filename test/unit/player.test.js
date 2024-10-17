@@ -851,7 +851,7 @@ QUnit.test('tech posters are not used on iOS', function(assert) {
   player2.poster(posterUri2);
 
   assert.strictEqual(player2.poster(), posterUri2, 'updated poster is set on iOS');
-  assert.false(player2.tech().el().hasAttribute('poster'), 'updated poster is added as video el attribute on non-iOS');
+  assert.true(player2.tech().el().hasAttribute('poster'), 'updated poster is added as video el attribute on non-iOS');
 
   player2.dispose();
   browser.reset_IS_IOS();
