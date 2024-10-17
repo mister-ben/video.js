@@ -818,6 +818,7 @@ QUnit.test('should wrap the original tag in the player div', function(assert) {
 
 QUnit.test('tech posters are not used on iOS', function(assert) {
   const posterUri = 'https://example.com/poster.jpg';
+  const posterUri2 = 'https://example.com/poster.png';
 
   browser.stub_IS_IOS(true);
 
@@ -827,8 +828,13 @@ QUnit.test('tech posters are not used on iOS', function(assert) {
 
   const player = TestHelpers.makePlayer({techOrder: ['html5']}, tag);
 
-  assert.strictEqual(player.poster(), posterUri, 'poster is set on iOS');
-  assert.false(player.tech().el().hasAttribute('poster'), 'poster attribute is not present on video el on iOS');
+  assert.strictEqual(player.poster(), posterUri, 'poster from tag is set on iOS');
+  assert.false(player.tech().el().hasAttribute('poster'), 'poster attribute is removed from video el on iOS');
+
+  player.poster(posterUri2);
+
+  assert.strictEqual(player.poster(), posterUri2, 'updated poster is set on iOS');
+  assert.false(player.tech().el().hasAttribute('poster'), 'updated poster is not added as video el attribute on iOS');
 
   player.dispose();
   browser.stub_IS_IOS(false);
@@ -841,6 +847,11 @@ QUnit.test('tech posters are not used on iOS', function(assert) {
 
   assert.strictEqual(player2.poster(), posterUri, 'poster is set on non-iOS');
   assert.true(player2.tech().el().hasAttribute('poster'), 'poster attribute is present on video el on non-iOS');
+
+  player2.poster(posterUri2);
+
+  assert.strictEqual(player2.poster(), posterUri2, 'updated poster is set on iOS');
+  assert.false(player2.tech().el().hasAttribute('poster'), 'updated poster is added as video el attribute on non-iOS');
 
   player2.dispose();
   browser.reset_IS_IOS();
