@@ -70,3 +70,6 @@ jobs:
         files: './test/dist/coverage/coverage-final.json'
         fail_ci_if_error: true
       if: ${{startsWith(env.CI_TEST_TYPE, 'coverage')}}
+
+    - name: pally
+      run: npm start && npx pa11y-ci
