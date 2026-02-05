@@ -1,6 +1,6 @@
 <picture>
   <source srcset="https://videojs.com/logo-white.png" media="(prefers-color-scheme: dark)">
-  <img src="images/logo-light-mode.png" style="filter: brightness(0,1);">
+  <img src="https://videojs.com/logo-white.png" style="filter: brightness(0,1);">
 </picture>
 
 # Video.js - Web Video Player & Framework
