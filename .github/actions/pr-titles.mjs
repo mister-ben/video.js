@@ -1,9 +1,14 @@
+/*
+ * This just enforces that PR titles use conventional commit syntax.
+ * GitHub will use the title as the commit message for squashed-merged commits.
+ * Only commits using this syntax get added to the changelog.
+ */
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 
 (async function run() {
   const title = github.context.payload.pull_request?.title;
-  const titleRegex = /^(chore|ci|docs|feat|fix|refactor|revert|test)(\(.+\))?!?: (.+)/;
+  const titleRegex = /^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(.+\))?!?: (.+)/;
 
   if (!!title.match(titleRegex)) {
     core.info('Pull request title is OK');
