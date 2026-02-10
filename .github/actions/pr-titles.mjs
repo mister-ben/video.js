@@ -1,8 +1,11 @@
 /*
- * This just enforces that PR titles use conventional commit syntax.
- * GitHub will use the title as the commit message for squashed-merged commits.
- * Only commits using this syntax get added to the changelog.
+ * This just enforces that pull request titles use conventional commit syntax.
+ * https://www.conventionalcommits.org/en/v1.0.0/#specification
+ *
+ * GitHub uses the PR title as the commit message for squashed-merged commits
+ * by default, and only commits using this syntax get added to the changelog.
  */
+
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 
@@ -16,3 +19,4 @@ import * as github from '@actions/github';
     core.setFailed('Please use conventional commit style for the PR title so the merged change appears in the changelog. See https://www.conventionalcommits.org/.');
   }
 })();
+
