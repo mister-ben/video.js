@@ -119,8 +119,7 @@ import './tech/html5.js';
  * @property  {boolean} [enableDocumentPictureInPicture]
  *              Enable picture-in-picture using the document picture-in-picture API if available
  * @property  {boolean} [enableSmoothSeeking]
- *              Smoother seeking experience
- *              TODO: Why not?
+ *              Smoother seeking experience (recommended)
  * @property  {boolean} [experimentalSvgIcons]
  *              Use SVG icons istead of the default font icons
  * @property  {boolean} [fluid]
